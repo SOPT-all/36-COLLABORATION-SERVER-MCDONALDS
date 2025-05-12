@@ -2,6 +2,7 @@ package org.sopt.service;
 
 import org.sopt.domain.Menu;
 import org.sopt.dto.response.MenuListResponse;
+import org.sopt.dto.response.MenuResponse;
 import org.sopt.dto.type.ErrorMessage;
 import org.sopt.exception.CustomException;
 import org.sopt.repository.MenuJpaRepository;
@@ -32,6 +33,20 @@ public class MenuService {
                 ))
                 .toList();
         return new MenuListResponse(menuSummaries);
+    }
+
+    public MenuResponse getMenuDetail(Long userId, Long menuId) {
+        validateUserIdExist(userId);
+        return menuRepository.findById(menuId)
+                .map(menu -> new MenuResponse(
+                        menu.getMenuId(),
+                        menu.getMenuName(),
+                        menu.getSingleImgUrl(),
+                        "₩" + menu.getSinglePrice().toString(),
+                        menu.getSetImgUrl(),
+                        "₩" + menu.getSetPrice().toString()
+                ))
+                .orElseThrow(() -> new CustomException(ErrorMessage.NOT_FOUND_ERROR));
     }
 
     private void validateUserIdExist(Long userId){
