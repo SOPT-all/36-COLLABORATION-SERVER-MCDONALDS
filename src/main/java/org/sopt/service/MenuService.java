@@ -10,6 +10,7 @@ import org.sopt.repository.UserJpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.text.NumberFormat;
 
 @Service
 public class MenuService {
@@ -29,7 +30,7 @@ public class MenuService {
                         menu.getMenuId(),
                         menu.getMenuName(),
                         menu.getSingleImgUrl(),
-                        "₩" + menu.getSinglePrice().toString() + " ~"
+                        "₩" + NumberFormat.getInstance().format(menu.getSinglePrice()) + " ~"
                 ))
                 .toList();
         return new MenuListResponse(menuSummaries);
@@ -42,9 +43,9 @@ public class MenuService {
                         menu.getMenuId(),
                         menu.getMenuName(),
                         menu.getSingleImgUrl(),
-                        "₩" + menu.getSinglePrice().toString(),
+                        "₩" + NumberFormat.getInstance().format(menu.getSinglePrice()),
                         menu.getSetImgUrl(),
-                        "₩" + menu.getSetPrice().toString()
+                        "₩" + NumberFormat.getInstance().format(menu.getSetPrice())
                 ))
                 .orElseThrow(() -> new CustomException(ErrorMessage.NOT_FOUND_ERROR));
     }
