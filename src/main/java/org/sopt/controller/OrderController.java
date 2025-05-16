@@ -3,7 +3,6 @@ package org.sopt.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.sopt.dto.common.BaseResponse;
-import org.sopt.dto.request.CreateOrderRequest;
 import org.sopt.dto.type.SuccessMessage;
 import org.sopt.service.OrderService;
 import org.springframework.http.ResponseEntity;

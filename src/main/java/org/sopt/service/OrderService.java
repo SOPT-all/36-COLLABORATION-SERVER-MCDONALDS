@@ -5,7 +5,6 @@ import org.sopt.domain.CartItem;
 import org.sopt.domain.Order;
 import org.sopt.domain.OrderDetail;
 import org.sopt.domain.User;
-import org.sopt.dto.request.CreateOrderRequest;
 import org.sopt.dto.type.ErrorMessage;
 import org.sopt.exception.CustomException;
 import org.sopt.repository.CartItemRepository;

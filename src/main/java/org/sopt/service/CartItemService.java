@@ -44,6 +44,20 @@ public class CartItemService {
         cartItemRepository.save(cartItem);
     }
 
+    @Transactional
+    public void updateCartItemAmount(Long userId, Long cartItemId, Integer newAmount) {
+        User user = getUser(userId);
+
+        CartItem cartItem = cartItemRepository.findById(cartItemId)
+                .orElseThrow(() -> new CustomException(ErrorMessage.NOT_FOUND_ERROR));
+
+        if (!cartItem.isOwnedBy(userId)) {
+            throw new CustomException(ErrorMessage.UNAUTHORIZED_ERROR);
+        }
+
+        cartItem.updateAmount(newAmount);
+    }
+
     public List<CartItemDto> getAllCartItems(Long userId) {
         User user = getUser(userId);
 
