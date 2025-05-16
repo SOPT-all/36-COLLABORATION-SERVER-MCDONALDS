@@ -1,10 +1,13 @@
 package org.sopt.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.sopt.domain.CartItem;
 import org.sopt.domain.Menu;
 import org.sopt.domain.User;
+import org.sopt.dto.CartItemDto;
 import org.sopt.dto.request.CreateCartItemRequest;
 import org.sopt.dto.type.ErrorMessage;
 import org.sopt.exception.CustomException;
@@ -29,12 +32,8 @@ public class CartItemService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorMessage.INVALID_HEADER_ERROR));
 
-        System.out.println("user: " + user);
-
         Menu menu = menuRepository.findById(request.menuId())
                 .orElseThrow(() -> new CustomException(ErrorMessage.NOT_FOUND_ERROR));
-
-        System.out.println("menu: " + menu);
 
         CartItem cartItem = CartItem.create(
                 request.isSet(),
@@ -45,4 +44,27 @@ public class CartItemService {
 
         cartItemRepository.save(cartItem);
     }
+
+    public List<CartItemDto> getAllCartItems(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorMessage.INVALID_HEADER_ERROR));
+
+        List<CartItem> cartItems = cartItemRepository.findAllByUser(user);
+        List<CartItemDto> result = new ArrayList<>();
+
+        for (CartItem cartItem : cartItems) {
+            Menu menu = cartItem.getMenu();
+            String imageUrl = cartItem.getIsSet() ? menu.getSetImgUrl() : menu.getSingleImgUrl();
+
+            CartItemDto dto = CartItemDto.of(
+                    cartItem,
+                    menu.getMenuName(),
+                    imageUrl
+            );
+            result.add(dto);
+        }
+
+        return result;
+    }
+
 }
