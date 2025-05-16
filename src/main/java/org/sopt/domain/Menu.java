@@ -19,6 +19,9 @@ public class Menu {
     @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CartItem> cartItems;
 
+    @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<OrderDetail> orderDetails;
+
     protected Menu() {
     }
 
