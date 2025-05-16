@@ -18,10 +18,9 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<BaseResponse<Void>> createOrder(
-            @RequestHeader Long userId,
-            @RequestBody @Valid CreateOrderRequest request
+            @RequestHeader Long userId
     ){
-        orderService.createOrder(userId, request);
+        orderService.createOrder(userId);
 
         return ResponseEntity.ok(
                 BaseResponse.success(SuccessMessage.OK, null)

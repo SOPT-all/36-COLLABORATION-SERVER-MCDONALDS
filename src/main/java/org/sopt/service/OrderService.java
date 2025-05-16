@@ -29,14 +29,14 @@ public class OrderService {
     private final OrderJpaRepository orderJpaRepository;
 
     @Transactional
-    public void createOrder(Long userId, CreateOrderRequest request) {
+    public void createOrder(Long userId) {
         User user = getUser(userId);
 
         Order order = Order.create(user);
         orderJpaRepository.save(order);
 
-        List<CartItem> cartItems = cartItemRepository.findAllById(request.cartItemIds());
-        if (cartItems.size() != request.cartItemIds().size()) {
+        List<CartItem> cartItems = cartItemRepository.findAllByUser(user);
+        if (cartItems.isEmpty()) {
             throw new CustomException(ErrorMessage.NOT_FOUND_ERROR);
         }
 
