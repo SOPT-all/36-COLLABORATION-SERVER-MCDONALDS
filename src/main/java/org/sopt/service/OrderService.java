@@ -5,6 +5,7 @@ import org.sopt.domain.CartItem;
 import org.sopt.domain.Order;
 import org.sopt.domain.OrderDetail;
 import org.sopt.domain.User;
+import org.sopt.dto.OrderDto;
 import org.sopt.dto.type.ErrorMessage;
 import org.sopt.exception.CustomException;
 import org.sopt.repository.CartItemRepository;
@@ -52,8 +53,31 @@ public class OrderService {
         cartItemRepository.deleteAll(cartItems);
     }
 
+    public List<OrderDto> getRecentItems(Long userId){
+        User user = getUser(userId);
+
+        Order recentOrder = orderJpaRepository.findTopByUserOrderByCreatedAtDesc(user)
+                .orElse(null);
+
+        if (recentOrder == null) {
+            return List.of();
+        }
+
+        return recentOrder.getOrderDetails().stream()
+                .map(orderDetail -> orderDetail.getMenu())
+                .filter(distinctByKey(menu -> menu.getMenuId()))
+                .limit(2)
+                .map(OrderDto::of)
+                .toList();
+    }
+
     private User getUser(Long userId) {
         return userJpaRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(ErrorMessage.INVALID_HEADER_ERROR));
+    }
+
+    private <T> java.util.function.Predicate<T> distinctByKey(java.util.function.Function<? super T, ?> keyExtractor) {
+        java.util.Set<Object> seen = java.util.concurrent.ConcurrentHashMap.newKeySet();
+        return t -> seen.add(keyExtractor.apply(t));
     }
 }
