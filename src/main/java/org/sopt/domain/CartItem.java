@@ -52,4 +52,11 @@ public class CartItem {
                 .build();
     }
 
+    public void updateAmount(Integer amount) {
+        this.amount = amount;
+    }
+
+    public boolean isOwnedBy(Long userId) {
+        return this.user.getUserId().equals(userId);
+    }
 }
