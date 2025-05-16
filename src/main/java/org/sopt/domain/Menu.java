@@ -1,6 +1,7 @@
 package org.sopt.domain;
 
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
 public class Menu {
@@ -12,6 +13,9 @@ public class Menu {
     private String setImgUrl;
     private Integer singlePrice;
     private Integer setPrice;
+
+    @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<CartItem> cartItems;
 
     protected Menu() {
     }
