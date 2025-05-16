@@ -29,8 +29,7 @@ public class CartItemService {
 
     @Transactional
     public void createCartItem(Long userId, CreateCartItemRequest request) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new CustomException(ErrorMessage.INVALID_HEADER_ERROR));
+        User user = getUser(userId);
 
         Menu menu = menuRepository.findById(request.menuId())
                 .orElseThrow(() -> new CustomException(ErrorMessage.NOT_FOUND_ERROR));
@@ -46,20 +45,17 @@ public class CartItemService {
     }
 
     public List<CartItemDto> getAllCartItems(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new CustomException(ErrorMessage.INVALID_HEADER_ERROR));
+        User user = getUser(userId);
 
         List<CartItem> cartItems = cartItemRepository.findAllByUser(user);
         List<CartItemDto> result = new ArrayList<>();
 
         for (CartItem cartItem : cartItems) {
             Menu menu = cartItem.getMenu();
-            String imageUrl = cartItem.getIsSet() ? menu.getSetImgUrl() : menu.getSingleImgUrl();
-
             CartItemDto dto = CartItemDto.of(
                     cartItem,
                     menu.getMenuName(),
-                    imageUrl
+                    cartItem.getIsSet() ? menu.getSetImgUrl() : menu.getSingleImgUrl()
             );
             result.add(dto);
         }
@@ -67,4 +63,8 @@ public class CartItemService {
         return result;
     }
 
+    private User getUser(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(ErrorMessage.INVALID_HEADER_ERROR));
+    }
 }
