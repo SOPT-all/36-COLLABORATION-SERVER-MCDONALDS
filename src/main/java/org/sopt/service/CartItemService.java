@@ -60,7 +60,7 @@ public class CartItemService {
     public List<CartItemDto> getAllCartItems(Long userId) {
         User user = getUser(userId);
 
-        List<CartItem> cartItems = cartItemJpaRepository.findAllByUser(user);
+        List<CartItem> cartItems = cartItemJpaRepository.findAllByUserWithMenu(user);
         List<CartItemDto> result = new ArrayList<>();
 
         for (CartItem cartItem : cartItems) {
