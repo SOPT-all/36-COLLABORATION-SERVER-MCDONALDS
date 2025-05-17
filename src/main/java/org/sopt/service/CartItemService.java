@@ -47,7 +47,7 @@ public class CartItemService {
     public void updateCartItemAmount(Long userId, Long cartItemId, Integer newAmount) {
         User user = getUser(userId);
 
-        CartItem cartItem = cartItemRepository.findById(cartItemId)
+        CartItem cartItem = cartItemJpaRepository.findById(cartItemId)
                 .orElseThrow(() -> new CustomException(ErrorMessage.NOT_FOUND_ERROR));
 
         if (!cartItem.isOwnedBy(userId)) {
@@ -67,6 +67,7 @@ public class CartItemService {
             Menu menu = cartItem.getMenu();
             CartItemDto dto = CartItemDto.of(
                     cartItem,
+                    cartItem.getIsSet() ? menu.getSetPrice() : menu.getSinglePrice(),
                     menu.getMenuName(),
                     cartItem.getIsSet() ? menu.getSetImgUrl() : menu.getSingleImgUrl()
             );
