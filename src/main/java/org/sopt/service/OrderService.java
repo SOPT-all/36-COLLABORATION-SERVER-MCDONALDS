@@ -8,7 +8,7 @@ import org.sopt.domain.User;
 import org.sopt.dto.OrderDto;
 import org.sopt.dto.type.ErrorMessage;
 import org.sopt.exception.CustomException;
-import org.sopt.repository.CartItemRepository;
+import org.sopt.repository.CartItemJpaRepository;
 import org.sopt.repository.OrderDetailJpaRepository;
 import org.sopt.repository.OrderJpaRepository;
 import org.sopt.repository.UserJpaRepository;
@@ -24,7 +24,7 @@ public class OrderService {
 
     private final OrderDetailJpaRepository orderDetailJpaRepository;
     private final UserJpaRepository userJpaRepository;
-    private final CartItemRepository cartItemRepository;
+    private final CartItemJpaRepository cartItemJpaRepository;
 
     private final OrderJpaRepository orderJpaRepository;
 
@@ -35,7 +35,7 @@ public class OrderService {
         Order order = Order.create(user);
         orderJpaRepository.save(order);
 
-        List<CartItem> cartItems = cartItemRepository.findAllByUser(user);
+        List<CartItem> cartItems = cartItemJpaRepository.findAllByUser(user);
         if (cartItems.isEmpty()) {
             throw new CustomException(ErrorMessage.NOT_FOUND_ERROR);
         }
@@ -50,7 +50,7 @@ public class OrderService {
                 .toList();
         orderDetailJpaRepository.saveAll(orderDetails);
 
-        cartItemRepository.deleteAll(cartItems);
+        cartItemJpaRepository.deleteAll(cartItems);
     }
 
     public List<OrderDto> getRecentItems(Long userId){
