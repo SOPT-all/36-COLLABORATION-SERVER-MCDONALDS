@@ -22,7 +22,7 @@ public class OrderController {
         orderService.createOrder(userId);
 
         return ResponseEntity.ok(
-                BaseResponse.success(SuccessMessage.OK, null)
+                BaseResponse.success(SuccessMessage.OK)
         );
     }
 
