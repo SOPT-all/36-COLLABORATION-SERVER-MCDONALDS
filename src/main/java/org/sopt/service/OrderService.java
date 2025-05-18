@@ -35,7 +35,7 @@ public class OrderService {
         Order order = Order.create(user);
         orderJpaRepository.save(order);
 
-        List<CartItem> cartItems = cartItemJpaRepository.findAllByUser(user);
+        List<CartItem> cartItems = cartItemJpaRepository.findAllByUserWithMenu(user);
         if (cartItems.isEmpty()) {
             throw new CustomException(ErrorMessage.NOT_FOUND_ERROR);
         }

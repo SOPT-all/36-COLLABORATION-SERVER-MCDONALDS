@@ -44,7 +44,7 @@ public class CartItemController {
     }
 
 
-    @PostMapping("/{cartItemId}")
+    @PatchMapping("/{cartItemId}")
     public ResponseEntity<BaseResponse<Void>> updateCartItemAmount(
             @RequestHeader Long userId,
             @PathVariable Long cartItemId,
