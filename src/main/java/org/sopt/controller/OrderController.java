@@ -1,8 +1,8 @@
 package org.sopt.controller;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.sopt.dto.common.BaseResponse;
+import org.sopt.dto.response.GetOrderRecentItemListResponse;
 import org.sopt.dto.type.SuccessMessage;
 import org.sopt.service.OrderService;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,19 @@ public class OrderController {
         orderService.createOrder(userId);
 
         return ResponseEntity.ok(
-                BaseResponse.success(SuccessMessage.OK, null)
+                BaseResponse.success(SuccessMessage.OK)
+        );
+    }
+
+    @GetMapping("/recent")
+    public ResponseEntity<BaseResponse<GetOrderRecentItemListResponse>> getRecentItems(
+            @RequestHeader Long userId
+    ){
+        return ResponseEntity.ok(
+                BaseResponse.success(
+                        SuccessMessage.OK,
+                        GetOrderRecentItemListResponse.of(orderService.getRecentItems(userId))
+                )
         );
     }
 }
