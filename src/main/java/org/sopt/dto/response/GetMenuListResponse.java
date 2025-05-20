@@ -18,7 +18,7 @@ public record GetMenuListResponse(
             return new MenuSummary(
                     menu.getMenuId(),
                     menu.getMenuName(),
-                    menu.getSetImgUrl(),
+                    menu.getSingleImgUrl(),
                     "₩" + NumberFormat.getInstance().format(menu.getSinglePrice()) + " ~"
             );
         }
