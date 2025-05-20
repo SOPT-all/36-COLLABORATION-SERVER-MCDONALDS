@@ -24,7 +24,8 @@ public class MenuService {
 
     public List<Menu> getMenuList(Long userId) {
         validateUserIdExist(userId);
-        return menuRepository.findAll();
+        List<Long> menuIds = List.of(1L, 2L, 3L, 4L, 5L);
+        return menuRepository.findAllById(menuIds);
     }
 
     public Menu getMenuDetail(Long userId, Long menuId) {
